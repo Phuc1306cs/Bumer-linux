@@ -1,13 +1,13 @@
 1. Cài đặt công cụ cần thiết
 sudo yum update 
 sudo yum install -y createrepo genisoimage syslinux
-2. Tạo cấu trúc thư mục làm việc
+2. Tạo cấu trúc thư mục làm việc:
 mkdir -p /root/centos-custom
 cd /root/centos-custom
-3. Sao chép toàn bộ hệ thống CentOS đã tối ưu
+3. Sao chép toàn bộ hệ thống CentOS đã tối ưu: 
 rsync -av / /root/centos-custom \
   --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"}
-4. Thêm file Kickstart (Tùy chỉnh cài đặt tự động)
+4. Thêm file Kickstart (Tùy chỉnh cài đặt tự động):
 Tạo hoặc chỉnh sửa file:
 vim /root/centos-custom/ks.cfg
 Ví dụ nội dung đơn giản:
@@ -30,18 +30,18 @@ reboot
 %packages
 @core
 %end
-5. Tạo repository các gói cài đặt
+5. Tạo repository các gói cài đặt:
 
 mkdir -p /root/centos-custom/packages
 cp /path/to/centos-rpms/*.rpm /root/centos-custom/packages
 cd /root/centos-custom/packages
 createrepo .
- 6. Chuẩn bị cấu hình bootloader
+ 6. Chuẩn bị cấu hình bootloader:
 Sao chép thư mục isolinux từ ISO cài đặt gốc CentOS 6:
 
 mkdir -p /root/centos-custom/isolinux
 cp -r /path/to/centos-iso/isolinux/* /root/centos-custom/isolinux/
-7. Chỉnh sửa file isolinux.cfg
+7. Chỉnh sửa file isolinux.cfg:
 vim /root/centos-custom/isolinux/isolinux.cfg
 Thêm hoặc sửa mục label:
 
@@ -54,7 +54,7 @@ label linux
   append initrd=initrd.img ks=cdrom:/ks.cfg
 Lưu ý: Đảm bảo vmlinuz và initrd.img tồn tại trong isolinux/ (hoặc copy từ ISO gốc nếu thiếu).
 
- 8. Tạo file ISO khởi động được
+ 8. Tạo file ISO khởi động được:
 cd /root/centos-custom
 genisoimage -o /root/custom-centos.iso \
   -b isolinux/isolinux.bin \
